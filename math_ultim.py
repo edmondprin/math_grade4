@@ -14,23 +14,23 @@ import random
 
 
 def pick_a_topic():
-    options_list = ["tens", "hundreds", "thousands", "tens of thousands", "hundreds of thousands", "millions"]
-    return random.choice(options_list)
+    options_list = ["ten", "hundred", "thousand", "ten of thousands", "hundred of thousands", "million"]
+    return random.choice(options_list[:2])
 
 def create_numbers_list():
     option = pick_a_topic()
     your_range = 3
     numbers_list = []
     for _ in range(your_range):
-        if option == "tens":
+        if option == "ten":
             x = random.randint(0, 100)
-        elif option == "hundreds":
+        elif option == "hundred":
             x = random.randint(100, 999)
-        elif option == "thousands":
+        elif option == "thousand":
             x = random.randint(1000, 9999)
-        elif option == "tens of thousands":
+        elif option == "ten of thousands":
             x = random.randint(10000, 99999)
-        elif option == "hundreds of thousands":
+        elif option == "hundred of thousands":
             x = random.randint(100000, 999999)
         else:
             x = random.randint(1000000, 9999999)
@@ -42,7 +42,7 @@ def gather_answer():
     user_responses = []
     for _ in range(length):
         while True:
-            user_input = input(f"What is the nearest {topic} for {tested_list[_]}? ")
+            user_input = input(f"What is the nearest {topic} for {tested_list[_]:,}? ")
             try:
                 user_input = int(user_input)
                 user_responses.append(user_input)
@@ -55,17 +55,17 @@ def gather_answer():
 def check_answers():
     topic, tested_list, user_responses = gather_answer()
     results = []
-    if topic == "tens":
+    if topic == "ten":
         expected = list(map(lambda x: round(x, -1), tested_list))
-    if topic == "hundreds":
+    if topic == "hundred":
             expected = list(map(lambda x: round(x, -2), tested_list))
-    if topic == "thousands":
+    if topic == "thousand":
             expected = list(map(lambda x: round(x, -3), tested_list))
-    if topic == "tens of housands":
+    if topic == "tens of housand":
             expected = list(map(lambda x: round(x, -4), tested_list))
-    if topic == "hundreds of thousands":
+    if topic == "hundred of thousands":
             expected = list(map(lambda x: round(x, -5), tested_list))
-    if topic == "millions":
+    if topic == "million":
             expected = list(map(lambda x: round(x, -6), tested_list))
     for _ in range(len(tested_list)):
         results.append(expected[_] == user_responses[_])
