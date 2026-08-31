@@ -1,75 +1,82 @@
 import random
 
-# tens, hundreds, thousands choice
-# create original list
-# gather user input
-# check answer
-# round (x, -1): tens
-# round (x, -2): hundreds
-# round (x, -3): thousands
-# round (x, -4): tens of thousands
-# round (x, -5): hundreds of thousands
-# round (x, -6): millions
-# when in middle, go to nearest high?
 
+def pick_topic():
+    options_list = ["tens", "hundreds", "thousands", "tens of thousands", "hundreds of thousands", "millions"]
+    return random.choice(options_list)
 
-def pick_a_topic():
-    options_list = ["ten", "hundred", "thousand", "ten of thousands", "hundred of thousands", "million"]
-    return random.choice(options_list[:2])
+ROUNDING_PLACES = {
+     "tens": -1,
+     "hundreds": -2,
+     "thousands": -3, 
+     "tens of thousands": -4,
+     "hundreds of thousands": -5,
+     "millions": -6
+}
 
-def create_numbers_list():
-    option = pick_a_topic()
-    your_range = 3
+NUMBERS_RANGES = {
+     "tens": (0, 100),
+     "hundreds": (100, 999),
+     "thousands": (1000, 9999),
+     "tens of thousands": (10000, 99999),
+     "hundreds of thousands": (100000, 999999),
+     "millions": (1000000, 9999999)
+}
+
+def generate_numbers(topic, count=3):
     numbers_list = []
-    for _ in range(your_range):
-        if option == "ten":
-            x = random.randint(0, 100)
-        elif option == "hundred":
-            x = random.randint(100, 999)
-        elif option == "thousand":
-            x = random.randint(1000, 9999)
-        elif option == "ten of thousands":
-            x = random.randint(10000, 99999)
-        elif option == "hundred of thousands":
-            x = random.randint(100000, 999999)
-        else:
-            x = random.randint(1000000, 9999999)
-        numbers_list.append(x)
-    return option, numbers_list, len(numbers_list)
+    for _ in range(count):
+        number = random.randint(NUMBERS_RANGES[topic][0], NUMBERS_RANGES[topic][1])
+        numbers_list.append(number)
+    return numbers_list
 
-def gather_answer():
-    topic, tested_list, length = create_numbers_list()
-    user_responses = []
-    for _ in range(length):
+def gather_answers(topic, numbers):
+    responses = []
+    for number in range(len(numbers)):
         while True:
-            user_input = input(f"What is the nearest {topic} for {tested_list[_]:,}? ")
+            answer = input(f"What is the nearest {topic} for {numbers[number]:,}? ")
             try:
-                user_input = int(user_input)
-                user_responses.append(user_input)
+                answer = int(answer)
+                responses.append(answer)
                 break
             except ValueError:
                 print("You need to enter a number!")
-    return topic, tested_list, user_responses
+    return responses
 
 
-def check_answers():
-    topic, tested_list, user_responses = gather_answer()
+def calculate_answers(topic, numbers):
     results = []
-    if topic == "ten":
-        expected = list(map(lambda x: round(x, -1), tested_list))
-    if topic == "hundred":
-            expected = list(map(lambda x: round(x, -2), tested_list))
-    if topic == "thousand":
-            expected = list(map(lambda x: round(x, -3), tested_list))
-    if topic == "tens of housand":
-            expected = list(map(lambda x: round(x, -4), tested_list))
-    if topic == "hundred of thousands":
-            expected = list(map(lambda x: round(x, -5), tested_list))
-    if topic == "million":
-            expected = list(map(lambda x: round(x, -6), tested_list))
-    for _ in range(len(tested_list)):
-        results.append(expected[_] == user_responses[_])
+    expected = list(map(lambda x: round(x, ROUNDING_PLACES[topic]), numbers))
+    for number in range(len(numbers)):
+        results.append(expected[number])
     return results
 
+def check_answers(topic, numbers, responses):
+     expected_answers = calculate_answers(topic, numbers)
+     return [
+          expected == response
+          for expected, response in zip(expected_answers, responses)
+     ]
 
-print(check_answers())
+def display_results(results):
+    points = 0
+    for a in results:
+        points += 1 if a == True else 0
+    print(f"Congrats! You earned a total of {points} points!")
+
+def main():
+     topic = pick_topic()
+     print(topic)
+     numbers = generate_numbers(topic, count=3)
+     print(numbers)
+     responses = gather_answers(topic, numbers)
+     print(f" Responses: {responses}")
+     test = calculate_answers(topic, numbers)
+     print(test)
+     results = check_answers(topic, numbers, responses)
+     print(results)
+     display_results(results)
+
+
+if __name__ == "__main__":
+    main()
