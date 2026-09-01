@@ -1,33 +1,40 @@
-import random
+import random, math
 
-
+TOPICS = {
+    "tens": {
+        "rounding_place": -1,
+        "number_range": (0, 100),
+    },
+    "hundreds": {
+        "rounding_place": -2,
+        "number_range": (100, 999),
+    },
+    "thousands": {
+        "rounding_place": -3,
+        "number_range": (1000, 9999),
+    },
+    "tens of thousands": {
+        "rounding_place": -4,
+        "number_range": (10000, 99999),
+    },
+    "hundreds of thousands": {
+        "rounding_place": -5,
+        "number_range": (100000, 999999),
+    },
+    "millions": {
+        "rounding_place": -6,
+        "number_range": (1000000, 9999999),
+    },
+}
 
 def pick_topic():
-    options_list = ["tens", "hundreds", "thousands", "tens of thousands", "hundreds of thousands", "millions"]
-    return random.choice(options_list)
+    return random.choice(list(TOPICS))
 
-ROUNDING_PLACES = {
-     "tens": -1,
-     "hundreds": -2,
-     "thousands": -3, 
-     "tens of thousands": -4,
-     "hundreds of thousands": -5,
-     "millions": -6
-}
-
-NUMBERS_RANGES = {
-     "tens": (0, 100),
-     "hundreds": (100, 999),
-     "thousands": (1000, 9999),
-     "tens of thousands": (10000, 99999),
-     "hundreds of thousands": (100000, 999999),
-     "millions": (1000000, 9999999)
-}
 
 def generate_numbers(topic, count=3):
     numbers_list = []
     for _ in range(count):
-        number = random.randint(NUMBERS_RANGES[topic][0], NUMBERS_RANGES[topic][1])
+        number = random.randint(TOPICS[topic]["number_range"][0], TOPICS[topic]["number_range"][1])
         numbers_list.append(number)
     return numbers_list
 
@@ -44,16 +51,30 @@ def gather_answers(topic, numbers):
     return responses
 
 
+def round_half_up(number, place):
+    unit = 10 ** abs(place)
+    return ((number + unit // 2) // unit) * unit
+    # unit = 10 ** abs(place)
+    # halfway_point = unit // 2
+    # adjusted_number = number + halfway_point
+    # rounded_multiple = adjusted_number // unit
+    # return rounded_multiple * unit
+
+
 def calculate_expected_answers(topic, numbers):
-    rounding_place = ROUNDING_PLACES[topic]
-    return [round(number, rounding_place) for number in numbers]
+    place = TOPICS[topic]["rounding_place"]
+    return [round_half_up(number, place) for number in numbers]
 
 def check_answers(topic, numbers, responses):
-     expected_answers = calculate_expected_answers(topic, numbers)
-     return [
-          expected == response
-          for expected, response in zip(expected_answers, responses)
-     ]
+    if len(numbers) == len(responses):
+        expected_answers = calculate_expected_answers(topic, numbers)
+        return [
+            expected == response
+            for expected, response in zip(expected_answers, responses)
+    ]
+    else:
+        print("Make sure to have 2 lists with the same length!")
+
 
 def display_results(results):
     points = sum(results)
@@ -62,7 +83,7 @@ def display_results(results):
 def main():
      topic = pick_topic()
     #  print(topic)
-     numbers = generate_numbers(topic, count=1)
+     numbers = generate_numbers(topic, count=5)
     #  print(numbers)
      responses = gather_answers(topic, numbers)
     #  print(f" Responses: {responses}")
