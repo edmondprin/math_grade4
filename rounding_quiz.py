@@ -88,7 +88,7 @@ def display_results(results):
 
 def main():
      topic = pick_topic()
-     numbers = generate_numbers(topic, count=5)
+     numbers = generate_numbers(topic, count=2)
      responses = gather_answers(topic, numbers)
      results = check_answers(topic, numbers, responses)
      display_results(results)

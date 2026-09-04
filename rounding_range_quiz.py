@@ -84,16 +84,16 @@ def display_results(results):
 
 def main():
     topic = pick_topic()
-    print("1:", topic)
+    # print("1:", topic)
     list_of_numbers, unit = pick_number(topic, count=2)
     # print("raw_number:", this_number, "rounded_number:", this_rounded_number, "unit:", unit)
-    print("2:", list_of_numbers, unit)
+    # print("2:", list_of_numbers, unit)
     values_list = calculate_two_values(list_of_numbers, unit)
-    print("3: Expected values: ", values_list)
+    # print("3: Expected values: ", values_list)
     responses_list = gather_answers(topic, list_of_numbers)
-    print("4: User answers: ", responses_list)
+    # print("4: User answers: ", responses_list)
     see_results = check_answers(values_list, responses_list)
-    print("5:", see_results)
+    # print("5:", see_results)
     display_results(see_results)
 
 
