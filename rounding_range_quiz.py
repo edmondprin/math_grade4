@@ -1,5 +1,6 @@
 import random
 
+
 TOPICS = {
     "tens": {
         "rounding_place": -1,
@@ -31,7 +32,7 @@ def pick_topic():
     return random.choice(list(TOPICS))
 
 
-def pick_number(topic, count=5):
+def pick_number(topic, count=10):
     numbers_list = []
     for _ in range(count):
         while True:
@@ -56,8 +57,8 @@ def gather_answers(topic, numbers):
     responses_list = []
     for number in numbers:
         while True:
-            min_answer = input(f"There were approximately {number:,} people at the stadium, rounded to the nearest {topic}. What is the MINIMUM possible actual attendance? ")
-            max_answer = input(f"There were approximately {number:,} people at the stadium, rounded to the nearest {topic}. What is the MAXIMUM possible actual attendance? ")
+            min_answer = input(f"\nThere were approximately {number:,} people at the stadium, rounded to the nearest {topic}.\nWhat is the MINIMUM possible actual attendance? ")
+            max_answer = input(f"There were approximately {number:,} people at the stadium, rounded to the nearest {topic}.\nWhat is the MAXIMUM possible actual attendance? ")
             clean_min_answer = min_answer.replace(",","")
             clean_max_answer = max_answer.replace(",","")
             try:
@@ -79,10 +80,13 @@ def check_answers(numbers, responses):
     ]
 
 def display_results(results):
-    points = sum(results)
-    print(f"You have a total of {points} points out of {len(results)}")
+    points_earned = sum(results)
+    total_points = len(results)
+    # print(f"You have a total of {points} points out of {len(results)}")
+    return points_earned, total_points
 
 def main():
+    section = "Find the range for a given number (min and max)"
     topic = pick_topic()
     # print("1:", topic)
     list_of_numbers, unit = pick_number(topic, count=2)
@@ -92,9 +96,10 @@ def main():
     # print("3: Expected values: ", values_list)
     responses_list = gather_answers(topic, list_of_numbers)
     # print("4: User answers: ", responses_list)
-    see_results = check_answers(values_list, responses_list)
+    results = check_answers(values_list, responses_list)
     # print("5:", see_results)
-    display_results(see_results)
+    points_earned, total_points = display_results(results)
+    return section, topic, list_of_numbers, unit, values_list, responses_list, results, points_earned, total_points
 
 
 

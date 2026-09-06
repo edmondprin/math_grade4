@@ -35,7 +35,7 @@ def pick_topic():
 def generate_numbers(topic, count=10):
     numbers_list = []
     for _ in range(count):
-        number = random.randint(TOPICS[topic]["number_range"][0], TOPICS[topic]["number_range"][1])
+        number = random.randint(TOPICS[topic]['number_range'][0], TOPICS[topic]['number_range'][1])
         numbers_list.append(number)
     return numbers_list
 
@@ -44,7 +44,7 @@ def gather_answers(topic, numbers):
     responses = []
     for number in numbers:
         while True:
-            answer = input(f"What is the nearest {topic} for {number:,}? ")
+            answer = input(f"\nWhat is the nearest {topic} for {number:,}? ")
             clean_answer = answer.replace(",", "")
             try:
                 responses.append(int(clean_answer))
@@ -82,16 +82,22 @@ def check_answers(topic, numbers, responses):
 
 
 def display_results(results):
-    points = sum(results)
-    print(f"Congrats! You earned a total of {points} points out of {len(results)}!")
+    points_earned = sum(results)
+    total_points = len(results)
+    # print(f"Congrats! You earned a total of {points} points out of {len(results)}!")
+    return points_earned, total_points
 
+# add thousand separator
 
 def main():
+     section = "Find the nearest rounded number"
      topic = pick_topic()
-     numbers = generate_numbers(topic, count=2)
-     responses = gather_answers(topic, numbers)
-     results = check_answers(topic, numbers, responses)
-     display_results(results)
+     list_of_numbers = generate_numbers(topic, count=2)
+     expected = calculate_expected_answers(topic, list_of_numbers)
+     responses_list = gather_answers(topic, list_of_numbers)
+     results = check_answers(topic, list_of_numbers, responses_list)
+     points_earned, total_points = display_results(results)
+     return section, topic, list_of_numbers, expected, responses_list, results, points_earned, total_points
 
 
 if __name__ == "__main__":
