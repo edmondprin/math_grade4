@@ -3,14 +3,10 @@ import rounding_range_quiz
 import datetime
 
 
-
 def gather_test_data():
     today = datetime.datetime.now()
     username = input("Enter your name: ")
     return today, username.title().strip() 
-
-
-
 
 
 def format_numbers(list_of_numbers_a, expected_a, responses_list_a):
@@ -20,13 +16,12 @@ def format_numbers(list_of_numbers_a, expected_a, responses_list_a):
     return formatted_list_numbers_a, formatted_expected_a, formatted_user_responses_a
 
 
-
-
 def format_ranges(list_of_numbers_b, values_list_b, responses_list_b):
     formatted_list_numbers_b = [f"{number:,}" for number in list_of_numbers_b]
     formatted_expected_b = [f"{num1:,}, {num2:,}" for (num1, num2) in values_list_b]
     formatted_user_responses_b = [f"{num1:,}, {num2:,}" for (num1, num2) in responses_list_b]
     return formatted_list_numbers_b, formatted_expected_b, formatted_user_responses_b
+
 
 def calculate_final_results(points_earned_a, points_earned_b, total_points_a, total_points_b):
     points_earned_total = points_earned_a + points_earned_b
@@ -48,8 +43,6 @@ def calculate_final_results(points_earned_a, points_earned_b, total_points_a, to
 
 
 def build_report(username, section_a, formatted_date, formatted_list_numbers_a, formatted_expected_a, formatted_user_responses_a, points_earned_a, total_points_a, section_b, formatted_list_numbers_b, formatted_expected_b, formatted_user_responses_b, points_earned_b, total_points_b, points_earned_total, max_points, grade):
-    
-
     report = f"\n\n**{username} | {formatted_date}**\n"
     report += f"{'Topic:':<25} {section_a}\n"
     report += f"{'List of numbers:':<25} {formatted_list_numbers_a}\n"
@@ -71,18 +64,18 @@ def build_report(username, section_a, formatted_date, formatted_list_numbers_a, 
     
     return report
 
+
 def save_report(filename, report):
     with open(filename, "a") as file:
         
         file.write(report)
 
 
-
 def main():
     today, username = gather_test_data()
     formatted_date = today.strftime("%m/%d/%Y")
 
-    section_a, topic_a, list_of_numbers_a, expected_a, responses_list_a, results_a, points_earned_a, total_points_a = rounding_quiz.main()
+    section_a, list_of_numbers_a, expected_a, responses_list_a, points_earned_a, total_points_a = rounding_quiz.main()
 
     formatted_list_numbers_a, formatted_expected_a, formatted_user_responses_a = format_numbers(
             list_of_numbers_a,
@@ -90,7 +83,7 @@ def main():
             responses_list_a
     )
 
-    section_b, topic_b, list_of_numbers_b, unit, values_list_b, responses_list_b, results_b, points_earned_b, total_points_b = rounding_range_quiz.main()
+    section_b, list_of_numbers_b, unit, values_list_b, responses_list_b, points_earned_b, total_points_b = rounding_range_quiz.main()
 
     formatted_list_numbers_b, formatted_expected_b, formatted_user_responses_b = format_ranges(
             list_of_numbers_b,
@@ -104,11 +97,9 @@ def main():
     save_report("log.md", report)
 
 
-
 if __name__ == "__main__":
     main()
     
-
 
 '''
 def remove_content(filename):
