@@ -99,7 +99,14 @@ def main():
     results = check_answers(values_list, responses_list)
     # print("5:", see_results)
     points_earned, total_points = display_results(results)
-    return section, topic, list_of_numbers, unit, values_list, responses_list, results, points_earned, total_points
+    return {
+        'section': section,
+        'numbers_generated': list_of_numbers,
+        'expected_numbers': values_list,
+        'user_answers': responses_list,
+        'points': points_earned,
+        'total_questions': total_points 
+    }
 
 
 

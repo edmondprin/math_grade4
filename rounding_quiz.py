@@ -87,8 +87,6 @@ def display_results(results):
     # print(f"Congrats! You earned a total of {points} points out of {len(results)}!")
     return points_earned, total_points
 
-# add thousand separator
-
 def main():
      section = "Find the nearest rounded number"
      topic = pick_topic()
@@ -97,8 +95,15 @@ def main():
      responses_list = gather_answers(topic, list_of_numbers)
      results = check_answers(topic, list_of_numbers, responses_list)
      points_earned, total_points = display_results(results)
-     return section, topic, list_of_numbers, expected, responses_list, results, points_earned, total_points
 
+     return {
+        'section': section,
+        'numbers_generated': list_of_numbers,
+        'expected_numbers': expected,
+        'user_answers': responses_list,
+        'points': points_earned,
+        'total_questions': total_points
+    }
 
 if __name__ == "__main__":
     main()
