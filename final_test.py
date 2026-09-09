@@ -41,33 +41,59 @@ def calculate_final_results(points_earned_a, points_earned_b, total_points_a, to
         grade = "F"
     return points_earned_total, max_points, grade
 
+'''
+section_1 = {
+"topic: "section_a,
+"numbers_generated": formatted_list_numbers_a,
+"expected_numbers": formatted_expected_a,
+"user_answers": formatted_user_responses_a,
+"points": points_earned_a,
+"total_questions": total_points_a
+}
 
-def build_report(username, section_a, formatted_date, formatted_list_numbers_a, formatted_expected_a, formatted_user_responses_a, points_earned_a, total_points_a, section_b, formatted_list_numbers_b, formatted_expected_b, formatted_user_responses_b, points_earned_b, total_points_b, points_earned_total, max_points, grade):
-    report = f"\n\n**{username} | {formatted_date}**\n"
-    report += f"{'Topic:':<25} {section_a}\n"
-    report += f"{'List of numbers:':<25} {formatted_list_numbers_a}\n"
-    report += f"{'Expected answers:':<25} {formatted_expected_a}\n"
+section_2 = { 
+"topic": section_b, 
+"numbers_generated": formatted_list_numbers_b, "expected_numbers": formatted_expected_b, "user_answers": formatted_user_responses_b, 
+"points": points_earned_b, 
+"total_questions": total_points_b 
+}
 
-    label = f"{username}'s answers:"
-    report += f"{label:<25} {formatted_user_responses_a}\n"
-    report += f"Section A: {points_earned_a} / {total_points_a}\n"
+user_data = { 
+"name": username, 
+"date": formatted_date 
+} 
 
-    report += f"{'Topic:':<25} {section_b}\n"
-    report += f"{'List of numbers:':<25} {formatted_list_numbers_b}\n"
-    report += f"{'Expected answers:':<25} {formatted_expected_b}\n"
+total = { 
+"points": points_earned_total, 
+"total_questions": max_points, 
+"final_grade": grade 
+}
+'''
 
-    label = f"{username}'s answers:"
-    report += f"{label:<25} {formatted_user_responses_b}\n"
-    report += f"Section B: {points_earned_b} / {total_points_b}\n"
+def build_report(user_data, section_1, section_2, total):
+    report = f"\n\n**{user_data['name']} | {user_data['date']}**\n"
+    report += f"{'Topic:':<25} {section_1['topic']}\n"
+    report += f"{'List of numbers:':<25} {section_1['numbers_generated']}\n"
+    report += f"{'Expected answers:':<25} {section_1['expected_numbers']}\n"
 
-    report += f"Total results: {points_earned_total} / {max_points} | Grade: {grade}"
+    label = f"{user_data['name']}'s answers:"
+    report += f"{label:<25} {section_1['user_answers']}\n"
+    report += f"Section A: {section_1['points']} / {section_1['total_questions']}\n"
+
+    report += f"{'Topic:':<25} {section_2['topic']}\n"
+    report += f"{'List of numbers:':<25} {section_2['numbers_generated']}\n"
+    report += f"{'Expected answers:':<25} {section_2['expected_numbers']}\n"
+
+    report += f"{label:<25} {section_2['user_answers']}\n"
+    report += f"Section B: {section_2['points']} / {section_2['total_questions']}\n"
+
+    report += f"Total results: {total['points']} / {total['total_questions']} | Grade: {total['final_grade']}"
     
     return report
 
 
 def save_report(filename, report):
-    with open(filename, "a") as file:
-        
+    with open(filename, "a") as file:       
         file.write(report)
 
 
