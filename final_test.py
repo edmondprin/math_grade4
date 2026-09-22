@@ -80,48 +80,61 @@ def save_report(filename, report):
         file.write(report)
 
 
-def main():
-    # today, username = gather_test_data()
-    # formatted_date = 
+def take_test():
     user_data = gather_test_data()
-
     section_1 = rounding_quiz.main()
-    # print(section_1)
-    # print(section_1['section'])
-    # print(section_1['expected_answers'])
-
     format_numbers(section_1)
-    # print(section_1)
-
     section_2 = rounding_range_quiz.main()
     format_ranges(section_2)
-    # print(section_2)
-
-
     total = calculate_final_results(section_1['points'], section_2['points'], section_1['total_questions'], section_2['total_questions'])
-
-
-
     report = build_report(user_data, section_1, section_2, total)
     save_report("log.md", report)
+
+def clear_file(filename):
+    with open(filename, "w") as file:
+        file.write("")
+
+def review_results(filename):
+    try:
+        with open(filename, "r") as file:
+            content = file.read()
+            if not content:
+                print("The file is empty.\n")
+            else:
+                print(content)
+    except FileNotFoundError:
+        print("You cannot read a file that does not exist yet.\n")
+
+
+def main():
+
+  
+
+    while True:
+        user_choice = input('''\nHello! Please pick an option from the list below:
+    1. Take the test and save results
+    2. Review previous results
+    3. Delete previous results
+    4. Quit\n
+    ''')
+        try:
+            user_choice = int(user_choice)
+            if 1 <= user_choice < 4:
+                if user_choice == 1:
+                    take_test()
+                elif user_choice == 2:
+                    review_results("log.md")
+                elif user_choice == 3:
+                    clear_file("log.md")
+            elif user_choice == 4:
+                break
+            else:
+                print("Please pick a valid choice between 1 and 4")
+        except ValueError:
+            print("Please pick a valid choice between 1 and 4")
+            continue
 
 
 if __name__ == "__main__":
     main()
     
-
-'''
-def remove_content(filename):
-    with open(filename, "w") as file:
-        file.write("")
-
-remove_content("example.txt")
-
-
-section
-numbers_generated
-expected_numbers
-user_answers
-points
-total_questions
-'''
